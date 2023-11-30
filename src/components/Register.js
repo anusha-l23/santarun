@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import {useFormik} from "formik";
@@ -18,6 +18,18 @@ const dispatch = useDispatch();
     const handleMouseOut = () => {
       setPlaceholder('##########');
     };
+const [events, setEvents] = useState([])
+
+
+    const fetchEvents = async()=>{
+      const res = await axios.get("http://localhost:3001/santarun/events")
+      console.log(res.data, "events")
+      setEvents(res.data);
+    }
+    
+    useEffect(()=>{
+fetchEvents();
+    },[])
 
     const formik = useFormik({
       initialValues: {
@@ -32,7 +44,8 @@ nameOfTheBib:"",
 bloodGroup:"",
 contactName:"",
 contactNumber:"",
-acceptedTerms:false
+acceptedTerms:false,
+eventName:""
       },
       validationSchema: Yup.object({
         firstName: Yup.string().required('This field is required'),
@@ -50,6 +63,8 @@ bloodGroup:Yup.string().required('This field is required'),
 contactName: Yup.string().required('This field is required'),
 contactNumber: Yup.string().required('This field is required'),
 acceptedTerms:Yup.boolean().required('This field is required'),
+eventName:Yup.string().required('Please select an event')
+
       }),
 
       onSubmit: async(values) => {
@@ -61,8 +76,9 @@ acceptedTerms:Yup.boolean().required('This field is required'),
       },
     });
 
-    
+
   return (
+    <>
     <div className='App w-50'>
         <div className="block-example border border-top-0 border-gray p-4 border-1">
           <div className='text-center'>
@@ -70,9 +86,7 @@ acceptedTerms:Yup.boolean().required('This field is required'),
             </div>
              <h3 className='text-center mt-5'>Registration Details</h3>
             <hr />
-            <div className="">
-                <p>Name <span className='text-danger'>*</span></p>
-        </div>
+           
        <Form onSubmit={(e)=>{
         e.preventDefault()
         formik.handleSubmit();
@@ -80,8 +94,32 @@ acceptedTerms:Yup.boolean().required('This field is required'),
         }}>
 
   <div className="form-row">
+  <div className="form-group col-md-6">
+  <label htmlFor='eventName'>Select Event</label>
+      <select
+        id='eventName'
+        className='form-control'
+        name='eventName'
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        value={formik.values.eventName}
+        invalid={formik.touched.eventName && formik.errors.eventName ? true : false}
+      >
+        <option value=''>Select an event</option>
+        {events.map((event) => (
+          <option key={event.id} value={event.eventName}>
+            {event.eventName}
+          </option>
+        ))}
+      </select>
+    </div>
+    <div className="form-group col-md-6"></div>
     <div className="form-group col-md-6">
-     
+  
+                <p>Name <span className='text-danger'>*</span></p>
+  </div>
+  <div className="form-group col-md-6"></div>
+  <div className="form-group col-md-6">
       <Input type="text"className="form-control" id="firstname" name="firstName" onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
                                             value={formik.values.firstName || ""}
@@ -356,9 +394,16 @@ acceptedTerms:Yup.boolean().required('This field is required'),
                 </div>
         </div>
                            </Form>
-    </div>
+
+
+
+
+
     </div>
     
+    </div>
+
+    </>
 )
 }
 

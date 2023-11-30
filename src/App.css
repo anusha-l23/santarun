@@ -116,3 +116,11 @@ border:none;
   text-decoration: none;
   background-color: #540208;
 }
+.flex{
+  display: flex;
+  align-items: justify-between;
+  gap:10;
+}
+.flex > div {
+  margin:20px;
+}
