@@ -34,7 +34,7 @@ const handleCoupon = async() => {
                   'Content-Type': 'application/json',
                 },
                })
-               navigate("./register");
+               navigate(`./register?event=${selectEvent}`);
      
            
              
@@ -59,18 +59,18 @@ const handleCoupon = async() => {
                 <div className="d-flex flex-row justify-content-between mx-5 align-items-center">
                     <div className="d-flex-inline">
                     <input type="radio" id="male" style={{transform: 'scale(1.5)', marginRight:"0.5em"}} value="5K Run - SANTA RUN" checked={selectEvent==="5K Run - SANTA RUN"} onChange={(e)=>setSelectEvent(e.target.value)}/>
-                        <label htmlFor="customRadio"className="custom-radio-label">5K Run - SANTA RUN</label>
+                        <label htmlFor="customRadio" className="custom-radio-label">5K Run - SANTA RUN</label>
                     </div>
 
 
                     <div>
-                        <label htmlFor="customRadio"className="custom-radio-label">700.00 INR</label>
+                        <label htmlFor="customRadio" className="custom-radio-label">700.00 INR</label>
                     </div>
                 </div>
                 <div className='mx-4'>
                     <div className="d-flex flex-row justify-content-between mx-5 align-items-center">
                         <div className="d-flex-inline">
-                            <label htmlFor="customRadio"className="custom-radio-label">Non timed run</label>
+                            <label htmlFor="customRadio" className="custom-radio-label">Non timed run</label>
                         </div>
                         <div>
 
@@ -81,7 +81,7 @@ const handleCoupon = async() => {
                 <div className="d-flex flex-row justify-content-between mx-5 align-items-center">
                     <div className="d-flex-inline">
                     <input type="radio" id="male" style={{transform: 'scale(1.5)', marginRight:"0.5em"}} value="10K Run - SANTA RUN" checked={selectEvent==="10K Run - SANTA RUN"} onChange={(e)=>setSelectEvent(e.target.value)}/>
-                        <label htmlFor="customRadio"className="custom-radio-label">10K Run - SANTA RUN</label>
+                        <label htmlFor="customRadio" className="custom-radio-label">10K Run - SANTA RUN</label>
                     </div>
 
 

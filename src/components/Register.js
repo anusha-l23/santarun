@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import {useFormik} from "formik";
 import * as Yup from 'yup';
 import { registerUser } from '../store/userSlice';
-import { FormFeedback,Form,Input, Label } from 'reactstrap';
+import { FormFeedback,Form,Input } from 'reactstrap';
 import axios from "axios"
 
 const Register = () => {
     const [placeholder, setPlaceholder] = useState('##########');
 const dispatch = useDispatch();
-
+const location = useLocation()
     const handleHover = () => {
       setPlaceholder('----------');
     };
@@ -31,6 +31,20 @@ const [events, setEvents] = useState([])
 fetchEvents();
     },[])
 
+    const searchParams = new URLSearchParams(location.search);
+
+    const eventname = searchParams.get('event')
+
+    const findEvent = events.find(event => event && event.eventName === eventname)
+
+    console.log(findEvent, "find")
+  
+    useEffect(()=>{
+      const eventId = findEvent ? findEvent.id : null;
+      formik.setFieldValue('eventId', eventId);
+    }, [findEvent]); // Add dependencies as needed
+   
+
     const formik = useFormik({
       initialValues: {
   firstName: '',
@@ -45,7 +59,7 @@ bloodGroup:"",
 contactName:"",
 contactNumber:"",
 acceptedTerms:false,
-eventName:""
+
       },
       validationSchema: Yup.object({
         firstName: Yup.string().required('This field is required'),
@@ -63,7 +77,6 @@ bloodGroup:Yup.string().required('This field is required'),
 contactName: Yup.string().required('This field is required'),
 contactNumber: Yup.string().required('This field is required'),
 acceptedTerms:Yup.boolean().required('This field is required'),
-eventName:Yup.string().required('Please select an event')
 
       }),
 
@@ -82,7 +95,7 @@ eventName:Yup.string().required('Please select an event')
     <div className='App w-50'>
         <div className="block-example border border-top-0 border-gray p-4 border-1">
           <div className='text-center'>
-            <img alt="Image" loading="lazy" style={{ textAlign: "center" }} src="https://reg.myraceindia.com/uploads/MRTS/form_files/regn%20banner.6530ed45e038e6.12464360.png" tabIndex="0" height="200px" width="680px" data-component="image" role="presentation" />
+            <img alt="" loading="lazy" style={{ textAlign: "center" }} src="https://reg.myraceindia.com/uploads/MRTS/form_files/regn%20banner.6530ed45e038e6.12464360.png" tabIndex="0" height="200px" width="680px" data-component="image" role="presentation" />
             </div>
              <h3 className='text-center mt-5'>Registration Details</h3>
             <hr />
@@ -95,7 +108,7 @@ eventName:Yup.string().required('Please select an event')
 
   <div className="form-row">
   <div className="form-group col-md-6">
-  <label htmlFor='eventName'>Select Event</label>
+  {/* <label htmlFor='eventName'>Select Event</label>
       <select
         id='eventName'
         className='form-control'
@@ -111,7 +124,7 @@ eventName:Yup.string().required('Please select an event')
             {event.eventName}
           </option>
         ))}
-      </select>
+      </select> */}
     </div>
     <div className="form-group col-md-6"></div>
     <div className="form-group col-md-6">
